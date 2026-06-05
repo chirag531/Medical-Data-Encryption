@@ -1,0 +1,792 @@
+{% extends "base.html" %}
+
+{% block title %}Text Steganography - MedSecure{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-font me-2"></i>Text Steganography - Secure Patient Data Hiding
+                </h4>
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="textTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="encrypt-tab" data-bs-toggle="tab" 
+                                data-bs-target="#encrypt" type="button">
+                            <i class="fas fa-lock me-2"></i>Encrypt & Hide
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="decrypt-tab" data-bs-toggle="tab" 
+                                data-bs-target="#decrypt" type="button">
+                            <i class="fas fa-unlock me-2"></i>Decrypt & Extract
+                        </button>
+                    </li>
+                    <!--<li class="nav-item" role="presentation">
+                        <button class="nav-link" id="performance-tab" data-bs-toggle="tab" 
+                                data-bs-target="#performance" type="button">
+                            <i class="fas fa-chart-bar me-2"></i>Performance Analytics
+                        </button>
+                    </li>-->
+                </ul>
+
+                <div class="tab-content mt-4" id="textTabContent">
+                    <!-- Encryption Tab -->
+                    <div class="tab-pane fade show active" id="encrypt">
+                        <form method="POST" action="{{ url_for('encrypt_text') }}" enctype="multipart/form-data" 
+                              data-encryption-form>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <!-- Patient Information -->
+                                    <div class="card mb-4">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0">
+                                                <i class="fas fa-user-injured me-2"></i>Patient Information
+                                            </h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <label class="form-label">Patient Data Format</label>
+                                                <textarea class="form-control" name="patient_data" rows="8" 
+                                                          placeholder="Enter patient details in the following format:
+
+Patient ID: P-2024-001
+Name: John Smith
+Age: 45
+Gender: Male
+Diagnosis: Hypertension
+Medications: Lisinopril 10mg daily
+Allergies: Penicillin
+Lab Results: BP 130/85, Cholesterol 180
+Treatment Plan: Monitor BP weekly, follow up in 3 months
+Physician: Dr. Sarah Wilson
+Date: 2024-01-15" required></textarea>
+                                                <div class="form-text">
+                                                    Enter complete patient information. This data will be encrypted and hidden in the image.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Image & Algorithm Selection -->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="card-header bg-light">
+                                                    <h6 class="mb-0">
+                                                        <i class="fas fa-image me-2"></i>Carrier Image
+                                                    </h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Select Carrier Image</label>
+                                                        <input type="file" class="form-control" name="image" accept="image/*" required 
+                                                               onchange="previewImage(this, 'encryptPreview')">
+                                                        <div class="form-text">PNG, JPG, JPEG files up to 10MB</div>
+                                                    </div>
+                                                    <div id="encryptPreview" class="text-center mt-3" style="display: none;">
+                                                        <img id="encryptPreviewImg" class="img-fluid rounded" style="max-height: 200px;">
+                                                        <div class="file-info mt-2 small text-muted"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--<div class="col-md-6">
+                                            <div class="card">
+                                                <div class="card-header bg-light">
+                                                    <h6 class="mb-0">
+                                                        <i class="fas fa-lock me-2"></i>Encryption Settings
+                                                    </h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Algorithm</label>
+                                                        <select class="form-select" name="algorithm" id="algorithmSelect">
+                                                            <option value="SM4">SM4 (128-bit) - Fast & Secure</option>
+                                                            <option value="AES-GCM">AES-256-GCM - Maximum Security</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="algorithm-info">
+                                                        <div class="card bg-light">
+                                                            <div class="card-body">
+                                                                <h6><i class="fas fa-info-circle me-2"></i>SM4 Algorithm</h6>
+                                                                <div class="row small mt-2">
+                                                                    <div class="col-6">
+                                                                        <strong>Key Size:</strong> 128-bit
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <strong>Security:</strong> High
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <strong>Speed:</strong> Fast
+                                                                    </div>
+                                                                    <div class="col-12 mt-2">
+                                                                        Chinese national standard block cipher, optimized for performance
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <!-- Instructions & Preview -->
+                                    <div class="card sticky-top" style="top: 100px;">
+                                        <div class="card-header bg-info text-white">
+                                            <h6 class="mb-0">
+                                                <i class="fas fa-info-circle me-2"></i>Encryption Process
+                                            </h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <ol class="small">
+                                                <li class="mb-2">Enter patient information in the specified format</li>
+                                                <li class="mb-2">Select a high-quality carrier image</li>
+                                                <li class="mb-2">Choose encryption algorithm based on security needs</li>
+                                                <li class="mb-2">Data is encrypted using the selected algorithm</li>
+                                                <li class="mb-2">Encrypted data is hidden in the image using LSB steganography</li>
+                                                <li class="mb-2">Download the stego image and save the encryption key securely</li>
+                                            </ol>
+                                            
+                                            <div class="mt-3 p-3 bg-light rounded">
+                                                <small class="text-muted">
+                                                    <i class="fas fa-shield-alt me-1"></i>
+                                                    <strong>Security Note:</strong> The encryption key is generated automatically and must be stored securely. Without the key, data cannot be recovered.
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg px-5">
+                                    <i class="fas fa-shield-alt me-2"></i>Encrypt & Hide Patient Data
+                                </button>
+                            </div>
+                        </form>
+
+                        {% if download_url %}
+                        <div class="mt-4">
+                            <div class="alert alert-success">
+                                <h5><i class="fas fa-check-circle me-2"></i>Encryption Successful!</h5>
+                                <p class="mb-2">Patient data has been encrypted and hidden in the image.</p>
+                                
+                                <div class="row mt-4">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-warning text-dark">
+                                                <h6 class="mb-0">
+                                                    <i class="fas fa-key me-2"></i>Encryption Key
+                                                </h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="key-display mb-3">
+                                                    {{ key }}
+                                                </div>
+                                                <button type="button" class="btn btn-outline-primary btn-sm w-100" 
+                                                        onclick="copyToClipboard('{{ key }}')">
+                                                    <i class="fas fa-copy me-2"></i>Copy Key
+                                                </button>
+                                                <div class="form-text text-center mt-2">
+                                                    <i class="fas fa-exclamation-triangle me-1"></i>
+                                                    Save this key securely!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-success text-white">
+                                                <h6 class="mb-0">
+                                                    <i class="fas fa-download me-2"></i>Download Result
+                                                </h6>
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <img src="{{ download_url }}" class="img-fluid rounded mb-3" 
+                                                     alt="Stego Image" style="max-height: 150px;">
+                                                <a href="{{ download_url }}" download class="btn btn-success w-100">
+                                                    <i class="fas fa-download me-2"></i>Download Stego Image
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Performance Metrics -->
+                                <!--<div class="row mt-4">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-info text-white">
+                                                <h6 class="mb-0">Performance Metrics</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row text-center">
+                                                    <div class="col-6">
+                                                        <div class="metric-value text-primary">{{ encryption_time }}s</div>
+                                                        <div class="metric-label">Encryption Time</div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="metric-value text-success">{{ embedding_time }}s</div>
+                                                        <div class="metric-label">Embedding Time</div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="metric-value text-warning">{{ total_time }}s</div>
+                                                        <div class="metric-label">Total Time</div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="metric-value text-info">{{ psnr_value }} dB</div>
+                                                        <div class="metric-label">Image Quality</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        {% if time_graph %}
+                                        <img src="{{ time_graph }}" class="img-fluid rounded" alt="Performance Graph">
+                                        {% endif %}
+                                    </div>
+                                </div>-->
+
+                                <!-- Pixel Analysis -->
+                                {% if pixel_stats and histogram_path %}
+                                <div class="row mt-4">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-dark text-white">
+                                                <h6 class="mb-0">
+                                                    <i class="fas fa-chart-bar me-2"></i>Pixel Statistics Comparison
+                                                </h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Channel</th>
+                                                                <th>Image</th>
+                                                                <th>Mean</th>
+                                                                <th>Std Dev</th>
+                                                                <th>Min</th>
+                                                                <th>Max</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for channel in ['red', 'green', 'blue'] %}
+                                                            <tr>
+                                                                <td rowspan="2" class="fw-bold text-{{ channel }}">{{ channel|title }}</td>
+                                                                <td>Original</td>
+                                                                <td>{{ "%.2f"|format(pixel_stats.original[channel].mean) }}</td>
+                                                                <td>{{ "%.2f"|format(pixel_stats.original[channel].std) }}</td>
+                                                                <td>{{ pixel_stats.original[channel].min }}</td>
+                                                                <td>{{ pixel_stats.original[channel].max }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Stego</td>
+                                                                <td>{{ "%.2f"|format(pixel_stats.stego[channel].mean) }}</td>
+                                                                <td>{{ "%.2f"|format(pixel_stats.stego[channel].std) }}</td>
+                                                                <td>{{ pixel_stats.stego[channel].min }}</td>
+                                                                <td>{{ pixel_stats.stego[channel].max }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-dark text-white">
+                                                <h6 class="mb-0">
+                                                    <i class="fas fa-image me-2"></i>Pixel Distribution Histogram
+                                                </h6>
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <img src="{{ histogram_path }}" class="img-fluid rounded" alt="Pixel Distribution Histogram">
+                                                <p class="small text-muted mt-2">
+                                                    Comparison of pixel value distributions between original and stego images
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Decryption Tab -->
+                    <div class="tab-pane fade" id="decrypt">
+                        <form method="POST" action="{{ url_for('decrypt_text') }}" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0">
+                                                <i class="fas fa-unlock me-2"></i>Data Extraction
+                                            </h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Stego Image</label>
+                                                        <input type="file" class="form-control" name="image" accept="image/*" required
+                                                               onchange="previewImage(this, 'decryptPreview')">
+                                                        <div class="form-text">Upload the image containing hidden data</div>
+                                                        <div id="decryptPreview" class="text-center mt-3" style="display: none;">
+                                                            <img id="decryptPreviewImg" class="img-fluid rounded" style="max-height: 200px;">
+                                                            <div class="file-info mt-2 small text-muted"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Encryption Key</label>
+                                                        <div class="input-group">
+                                                            <input type="password" class="form-control" name="key" 
+                                                                   placeholder="Enter encryption key" required>
+                                                            <button type="button" class="btn btn-outline-secondary" 
+                                                                    onclick="toggleKeyVisibility(this)">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="form-text">
+                                                            Enter the exact key provided during encryption
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="card">
+                                        <div class="card-header bg-info text-white">
+                                            <h6 class="mb-0">
+                                                <i class="fas fa-info-circle me-2"></i>Extraction Process
+                                            </h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <ol class="small">
+                                                <li class="mb-2">Upload the stego image containing hidden data</li>
+                                                <li class="mb-2">Enter the correct encryption key</li>
+                                                <li class="mb-2">System extracts and decrypts the data automatically</li>
+                                                <li class="mb-2">Patient information is displayed securely</li>
+                                            </ol>
+                                            <div class="mt-3 p-3 bg-warning rounded">
+                                                <small>
+                                                    <i class="fas fa-exclamation-triangle me-1"></i>
+                                                    <strong>Note:</strong> Wrong keys will be logged for security monitoring.
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-success btn-lg px-5">
+                                    <i class="fas fa-search me-2"></i>Extract & Decrypt Data
+                                </button>
+                            </div>
+                        </form>
+
+                        {% if decrypted_text %}
+                        <div class="mt-4">
+                            <div class="alert alert-success">
+                                <h5><i class="fas fa-check-circle me-2"></i>Data Extraction Successful!</h5>
+                                <!--<p><strong>Algorithm Detected:</strong> {{ algorithm }}</p>-->
+                                
+                                <div class="card mt-3">
+                                    <div class="card-header bg-primary text-white">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-file-medical me-2"></i>Patient Medical Records
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <pre class="mb-0" style="white-space: pre-wrap; font-family: 'Courier New', monospace;">{{ decrypted_text }}</pre>
+                                    </div>
+                                </div>
+
+                                <!-- Performance Metrics -->
+                                <!--<div class="row mt-4">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-info text-white">
+                                                <h6 class="mb-0">Performance Metrics</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row text-center">
+                                                    <div class="col-6">
+                                                        <div class="metric-value text-primary">{{ extraction_time }}s</div>
+                                                        <div class="metric-label">Extraction Time</div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="metric-value text-success">{{ decryption_time }}s</div>
+                                                        <div class="metric-label">Decryption Time</div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="metric-value text-warning">{{ total_time }}s</div>
+                                                        <div class="metric-label">Total Time</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        {% if time_graph %}
+                                        <img src="{{ time_graph }}" class="img-fluid rounded" alt="Performance Graph">
+                                        {% endif %}
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Performance Analytics Tab -->
+                    <!--<div class="tab-pane fade" id="performance">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header bg-info text-white">
+                                        <h6 class="mb-0">Encryption Performance</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="encryptionTimeChart" height="250"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header bg-success text-white">
+                                        <h6 class="mb-0">Image Quality Metrics</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="psnrChart" height="250"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header bg-warning text-dark">
+                                        <h6 class="mb-0">Algorithm Comparison</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="algorithmComparisonChart" height="250"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header bg-primary text-white">
+                                        <h6 class="mb-0">Real-time Statistics</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row text-center">
+                                            <div class="col-6 mb-3">
+                                                <div class="metric-value text-primary">0.045s</div>
+                                                <div class="metric-label">Avg. Encryption</div>
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <div class="metric-value text-success">0.038s</div>
+                                                <div class="metric-label">Avg. Decryption</div>
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <div class="metric-value text-warning">48.2 dB</div>
+                                                <div class="metric-label">Avg. PSNR</div>
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <div class="metric-value text-info">99.8%</div>
+                                                <div class="metric-label">Success Rate</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Image preview functionality
+function previewImage(input, previewId) {
+    const preview = document.getElementById(previewId);
+    const previewImg = document.getElementById(previewId + 'Img');
+    const fileInfo = preview.querySelector('.file-info');
+    
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            preview.style.display = 'block';
+            
+            // Display file information
+            const fileSize = (file.size / (1024 * 1024)).toFixed(2);
+            fileInfo.innerHTML = `
+                <div><strong>${file.name}</strong></div>
+                <div>Size: ${fileSize} MB</div>
+                <div>Type: ${file.type}</div>
+            `;
+        }
+        
+        reader.readAsDataURL(file);
+    } else {
+        preview.style.display = 'none';
+    }
+}
+
+// Toggle key visibility
+function toggleKeyVisibility(button) {
+    const input = button.closest('.input-group').querySelector('input');
+    const icon = button.querySelector('i');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+    } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+    }
+}
+
+// Copy to clipboard
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        // Show notification
+        const notification = document.createElement('div');
+        notification.className = 'alert alert-success alert-dismissible fade show position-fixed';
+        notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        notification.innerHTML = `
+            <i class="fas fa-check-circle me-2"></i>Key copied to clipboard!
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(notification);
+        
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
+}
+
+// Algorithm info update
+document.addEventListener('DOMContentLoaded', function() {
+    const algorithmSelect = document.getElementById('algorithmSelect');
+    const algorithmInfo = document.querySelector('.algorithm-info');
+    
+    if (algorithmSelect && algorithmInfo) {
+        algorithmSelect.addEventListener('change', function() {
+            const algorithm = this.value;
+            let infoHtml = '';
+            
+            if (algorithm === 'AES-GCM') {
+                infoHtml = `
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6><i class="fas fa-info-circle me-2"></i>AES-256-GCM Algorithm</h6>
+                            <div class="row small mt-2">
+                                <div class="col-6">
+                                    <strong>Key Size:</strong> 256-bit
+                                </div>
+                                <div class="col-6">
+                                    <strong>Security:</strong> Very High
+                                </div>
+                                <div class="col-6">
+                                    <strong>Speed:</strong> Fast
+                                </div>
+                                <div class="col-12 mt-2">
+                                    Advanced Encryption Standard with Galois/Counter Mode, provides authenticated encryption
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                infoHtml = `
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6><i class="fas fa-info-circle me-2"></i>SM4 Algorithm</h6>
+                            <div class="row small mt-2">
+                                <div class="col-6">
+                                    <strong>Key Size:</strong> 128-bit
+                                </div>
+                                <div class="col-6">
+                                    <strong>Security:</strong> High
+                                </div>
+                                <div class="col-6">
+                                    <strong>Speed:</strong> Fast
+                                </div>
+                                <div class="col-12 mt-2">
+                                    Chinese national standard block cipher, optimized for performance
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            algorithmInfo.innerHTML = infoHtml;
+        });
+    }
+    
+    // Initialize performance charts
+    initializePerformanceCharts();
+});
+
+// Initialize performance charts
+function initializePerformanceCharts() {
+    // Encryption Time Chart
+    const encryptionCtx = document.getElementById('encryptionTimeChart');
+    if (encryptionCtx) {
+        new Chart(encryptionCtx, {
+            type: 'bar',
+            data: {
+                labels: ['SM4', 'AES-256-GCM', 'Text Embedding', 'Image Embedding'],
+                datasets: [{
+                    label: 'Time (seconds)',
+                    data: [0.045, 0.038, 1.234, 2.567],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.8)',
+                        'rgba(39, 174, 96, 0.8)',
+                        'rgba(155, 89, 182, 0.8)',
+                        'rgba(241, 196, 15, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(52, 152, 219, 1)',
+                        'rgba(39, 174, 96, 1)',
+                        'rgba(155, 89, 182, 1)',
+                        'rgba(241, 196, 15, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Encryption Performance Comparison'
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Time (seconds)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // PSNR Chart
+    const psnrCtx = document.getElementById('psnrChart');
+    if (psnrCtx) {
+        new Chart(psnrCtx, {
+            type: 'line',
+            data: {
+                labels: ['Image 1', 'Image 2', 'Image 3', 'Image 4', 'Image 5'],
+                datasets: [{
+                    label: 'PSNR (dB)',
+                    data: [45.6, 48.2, 42.8, 47.1, 49.3],
+                    borderColor: 'rgba(231, 76, 60, 1)',
+                    backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Image Quality Metrics (PSNR)'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 40,
+                        title: {
+                            display: true,
+                            text: 'PSNR (dB)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Algorithm Comparison Chart
+    const comparisonCtx = document.getElementById('algorithmComparisonChart');
+    if (comparisonCtx) {
+        new Chart(comparisonCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Speed', 'Security', 'Image Quality', 'File Size', 'Compatibility'],
+                datasets: [{
+                    label: 'SM4',
+                    data: [85, 80, 90, 75, 95],
+                    backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    pointBackgroundColor: 'rgba(52, 152, 219, 1)'
+                }, {
+                    label: 'AES-256-GCM',
+                    data: [75, 95, 85, 80, 90],
+                    backgroundColor: 'rgba(39, 174, 96, 0.2)',
+                    borderColor: 'rgba(39, 174, 96, 1)',
+                    pointBackgroundColor: 'rgba(39, 174, 96, 1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Algorithm Comparison'
+                    }
+                },
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: true
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Registration - MedSecure{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card fade-in-up">
+            <div class="card-header bg-info text-white text-center py-4">
+                <h4 class="mb-0"><i class="fas fa-user-plus me-2"></i>Admin Registration</h4>
+                <p class="mb-0 mt-2">Create Administrator Account</p>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('admin_register') }}">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">
+                                    <i class="fas fa-user me-2"></i>Full Name
+                                </label>
+                                <input type="text" class="form-control" id="name" name="name" 
+                                       placeholder="Dr. John Smith" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="mobile" class="form-label">
+                                    <i class="fas fa-phone me-2"></i>Mobile Number
+                                </label>
+                                <input type="tel" class="form-control" id="mobile" name="mobile" 
+                                       placeholder="+1 (555) 123-4567" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">
+                            <i class="fas fa-envelope me-2"></i>Email Address
+                        </label>
+                        <input type="email" class="form-control" id="email" name="email" 
+                               placeholder="admin@hospital.com" required>
+                        <div class="form-text">Use your official hospital email address</div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="password" class="form-label">
+                                    <i class="fas fa-lock me-2"></i>Password
+                                </label>
+                                <input type="password" class="form-control" id="password" name="password" 
+                                       placeholder="Create strong password" required minlength="8">
+                                <div class="form-text">Minimum 8 characters</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="confirm_password" class="form-label">
+                                    <i class="fas fa-lock me-2"></i>Confirm Password
+                                </label>
+                                <input type="password" class="form-control" id="confirm_password" 
+                                       placeholder="Confirm your password" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="terms" required>
+                            <label class="form-check-label" for="terms">
+                                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-info w-100 py-2">
+                        <i class="fas fa-user-shield me-2"></i>Register as Administrator
+                    </button>
+                </form>
+                
+                <div class="text-center mt-4">
+                    <p class="mb-0">Already have an account?</p>
+                    <a href="{{ url_for('admin_login') }}" class="btn btn-outline-primary mt-2">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login to Admin Panel
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Security Requirements -->
+        <div class="card mt-4">
+            <div class="card-header bg-warning text-dark">
+                <h6 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Security Requirements</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li><i class="fas fa-check text-success me-2"></i>Use strong, unique password</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Keep credentials confidential</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Enable two-factor authentication</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Regularly update password</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('confirm_password').addEventListener('input', function() {
+    const password = document.getElementById('password').value;
+    const confirmPassword = this.value;
+    
+    if (password !== confirmPassword) {
+        this.setCustomValidity('Passwords do not match');
+    } else {
+        this.setCustomValidity('');
+    }
+});
+</script>
+{% endblock %}

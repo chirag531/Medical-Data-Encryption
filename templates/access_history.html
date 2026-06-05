@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Access History - MedSecure{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-history me-2"></i>System Access History
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>User</th>
+                                <th>Type</th>
+                                <th>Operation</th>
+                                <th>Data Type</th>
+                                <!--<th>Algorithm</th>-->
+                                <th>Status</th>
+                                <th>Time (s)</th>
+                                <!--<th>PSNR (dB)</th>-->
+                                <!--<th>IP Address</th>-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in access_history %}
+                            <tr>
+                                <td>{{ record[10] }}</td>
+                                <td>
+                                    <strong>{{ record[3] }}</strong><br>
+                                    <small class="text-muted">{{ record[2] }}</small>
+                                </td>
+                                <td>
+                                    <span class="badge {% if record[1] == 'admin' %}bg-warning{% else %}bg-info{% endif %}">
+                                        {{ record[1]|title }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge {% if record[4] == 'encrypt' %}bg-success{% else %}bg-primary{% endif %}">
+                                        {{ record[4]|title }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary">{{ record[5]|title }}</span>
+                                </td>
+                                <!--<td>
+                                    <code>{{ record[6] }}</code>
+                                </td>-->
+                                <td>
+                                    {% if record[7] %}
+                                    <span class="badge bg-success">Success</span>
+                                    {% else %}
+                                    <span class="badge bg-danger">Failed</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if record[8] %}
+                                    <span class="text-primary fw-bold">{{ "%.4f"|format(record[8]) }}</span>
+                                    {% else %}
+                                    <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <!--<td>
+                                    {% if record[9] %}
+                                    <span class="text-success fw-bold">{{ "%.2f"|format(record[9]) }}</span>
+                                    {% else %}
+                                    <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>-->
+                                <!--<td>
+                                    <small class="text-muted">{{ record[11] }}</small>
+                                </td>-->
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                {% if not access_history %}
+                <div class="text-center py-5">
+                    <i class="fas fa-history fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No access history found</h5>
+                    <p class="text-muted">Access records will appear here when users perform operations.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

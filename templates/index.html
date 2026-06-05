@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center min-vh-80">
+    <div class="col-lg-10 text-center text-white fade-in-up">
+        <!-- Hero Section -->
+        <div class="hero-section mb-5">
+            <h1 class="display-3 fw-bold mb-4">
+                <i class="fas fa-shield-alt me-3"></i>MedSecure
+            </h1>
+            <p class="lead fs-4 mb-4">Advanced Medical Data Protection System</p>
+            <p class="mb-5">Secure patient data using cutting-edge steganography and encryption technologies</p>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card h-100 pulse">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-lock feature-icon"></i>
+                        <h5 class="fw-bold">Military-Grade Encryption</h5>
+                        <p class="text-muted">Protect sensitive medical data with SM4 and AES-256-GCM algorithms</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 pulse">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-image feature-icon"></i>
+                        <h5 class="fw-bold">Advanced Steganography</h5>
+                        <p class="text-muted">Hide data and images within carrier images with minimal quality loss</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 pulse">
+                    <div class="card-body text-center p-4">
+                        <i class="fas fa-chart-line feature-icon"></i>
+                        <h5 class="fw-bold">Performance Analytics</h5>
+                        <p class="text-muted">Monitor encryption performance and image quality metrics in real-time</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Features -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="card h-100">
+                    <div class="card-body text-center p-3">
+                        <i class="fas fa-user-shield text-primary fa-2x mb-3"></i>
+                        <h6>Role-Based Access</h6>
+                        <small class="text-muted">Separate admin and patient portals</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100">
+                    <div class="card-body text-center p-3">
+                        <i class="fas fa-history text-success fa-2x mb-3"></i>
+                        <h6>Audit Trail</h6>
+                        <small class="text-muted">Track all access attempts</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100">
+                    <div class="card-body text-center p-3">
+                        <i class="fas fa-bolt text-warning fa-2x mb-3"></i>
+                        <h6>High Performance</h6>
+                        <small class="text-muted">Fast encryption and decryption</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100">
+                    <div class="card-body text-center p-3">
+                        <i class="fas fa-mobile-alt text-info fa-2x mb-3"></i>
+                        <h6>Responsive Design</h6>
+                        <small class="text-muted">Works on all devices</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="row g-3 justify-content-center">
+            <div class="col-md-2">
+                <a href="{{ url_for('admin_login') }}" class="btn btn-primary btn-lg w-100">
+                    <i class="fas fa-user-shield me-2"></i>Admin
+                </a>
+            </div>
+            <div class="col-md-2">
+                <a href="{{ url_for('user_login') }}" class="btn btn-success btn-lg w-100">
+                    <i class="fas fa-user me-2"></i>Patient
+                </a>
+            </div>
+            <div class="col-md-2">
+                <a href="{{ url_for('admin_register') }}" class="btn btn-info btn-lg w-100">
+                    <i class="fas fa-user-plus me-2"></i>Admin Register
+                </a>
+            </div>
+            <div class="col-md-2">
+                <a href="{{ url_for('user_register') }}" class="btn btn-warning btn-lg w-100">
+                    <i class="fas fa-user-plus me-2"></i>Patient Register
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <!--<div class="row mt-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-3">
+                                <h3 class="text-primary fw-bold">100%</h3>
+                                <small>Data Security</small>
+                            </div>
+                            <div class="col-md-3">
+                                <h3 class="text-success fw-bold">256-bit</h3>
+                                <small>Encryption Strength</small>
+                            </div>
+                            <div class="col-md-3">
+                                <h3 class="text-warning fw-bold">50+ dB</h3>
+                                <small>Image Quality (PSNR)</small>
+                            </div>
+                            <div class="col-md-3">
+                                <h3 class="text-info fw-bold">0.1s</h3>
+                                <small>Average Processing Time</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+    </div>
+</div>
+{% endblock %}
