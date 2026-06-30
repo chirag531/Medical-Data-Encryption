@@ -1,5 +1,5 @@
 # Medical Data Encryption (MDE)
-
+![image alt](https://github.com/chirag531/Medical-Data-Encryption/blob/main/Home%20pg.png)
 ## Overview
 Medical Data Encryption (MDE) is a cybersecurity-based application designed to protect sensitive healthcare information through secure encryption techniques. The project ensures patient records remain confidential, secure, and accessible only to authorized users.
 
@@ -60,4 +60,4 @@ Developed as a cybersecurity project for secure healthcare data management.
 License
 
 This project is licensed under the MIT License.
-![image alt](https://github.com/chirag531/Medical-Data-Encryption/blob/main/Home%20pg.png)
+
