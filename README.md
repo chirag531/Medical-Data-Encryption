@@ -60,3 +60,4 @@ Developed as a cybersecurity project for secure healthcare data management.
 License
 
 This project is licensed under the MIT License.
+![image alt](https://github.com/chirag531/Medical-Data-Encryption/blob/main/Home%20pg.png)
